@@ -10,6 +10,7 @@ import com.pllfdev.restapi_mvvm_java.adapters.RecipeRecyclerAdapter;
 import com.pllfdev.restapi_mvvm_java.databinding.ActivityRecipeListBinding;
 import com.pllfdev.restapi_mvvm_java.models.Recipe;
 import com.pllfdev.restapi_mvvm_java.utils.Testing;
+import com.pllfdev.restapi_mvvm_java.utils.VerticalSpacingItemDecorator;
 import com.pllfdev.restapi_mvvm_java.viewmodels.RecipeListViewModel;
 import java.util.List;
 
@@ -43,9 +44,14 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         mResipeListViewModel.searchRecipesApi(query,pageNumber);
     }
     private void initRecyclerView(){
-        binding.recipeList.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new RecipeRecyclerAdapter(this);
+
+        //recyclerview separator
+        VerticalSpacingItemDecorator itemDecorator = new VerticalSpacingItemDecorator(30);
+        binding.recipeList.addItemDecoration(itemDecorator);
+
         binding.recipeList.setAdapter(mAdapter);
+        binding.recipeList.setLayoutManager(new LinearLayoutManager(this));
     }
 
     public void subscribeObservers(){
