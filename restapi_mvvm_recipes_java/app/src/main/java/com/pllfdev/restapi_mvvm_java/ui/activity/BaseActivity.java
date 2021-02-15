@@ -1,4 +1,4 @@
-package com.pllfdev.restapi_mvvm_java;
+package com.pllfdev.restapi_mvvm_java.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Build;

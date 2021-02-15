@@ -1,4 +1,4 @@
-package com.pllfdev.restapi_mvvm_java;
+package com.pllfdev.restapi_mvvm_java.utils;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

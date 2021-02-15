@@ -1,5 +1,6 @@
-package com.pllfdev.restapi_mvvm_java;
+package com.pllfdev.restapi_mvvm_java.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pllfdev.restapi_mvvm_java.R;
 import com.pllfdev.restapi_mvvm_java.adapters.OnRecipeListener;
 import com.pllfdev.restapi_mvvm_java.adapters.RecipeRecyclerAdapter;
 import com.pllfdev.restapi_mvvm_java.models.Recipe;
@@ -112,7 +114,9 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
 
     @Override
     public void onRecipeClick(int position) {
-
+        Intent intent = new Intent(this,RecipeDetailsActivity.class);
+        intent.putExtra("recipe", mAdapter.getSelectedRecipe(position));
+        startActivity(intent);
     }
 
     @Override
