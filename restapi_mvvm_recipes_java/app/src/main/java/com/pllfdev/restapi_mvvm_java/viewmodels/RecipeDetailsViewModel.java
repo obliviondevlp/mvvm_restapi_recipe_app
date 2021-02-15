@@ -9,6 +9,7 @@ import com.pllfdev.restapi_mvvm_java.repositories.RecipeRepository;
 public class RecipeDetailsViewModel extends ViewModel {
 
     private RecipeRepository mRecipeRepository;
+    private String mRecipeId;
 
     public RecipeDetailsViewModel(){
         mRecipeRepository = RecipeRepository.getInstance();
@@ -19,6 +20,11 @@ public class RecipeDetailsViewModel extends ViewModel {
     }
 
     public void searchRecipeById(String recipeId){
+        mRecipeId = recipeId;
         mRecipeRepository.searchRecipeById(recipeId);
+    }
+
+    public String getRecipeId() {
+        return mRecipeId;
     }
 }
