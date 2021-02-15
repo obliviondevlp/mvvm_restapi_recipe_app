@@ -57,7 +57,18 @@ public class RecipeDetailsActivity extends BaseActivity {
                 if(recipe != null){
                     if(recipe.getRecipe_id().equals(mRecipeDetailsViewModel.getRecipeId())){
                         setProprieties(recipe);
+                        mRecipeDetailsViewModel.setRetrievedRecipe(true);
                     }
+                }
+            }
+        });
+
+        mRecipeDetailsViewModel.isRecipeRequestTimeout().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean && !mRecipeDetailsViewModel.didRetrievedRecipe()){
+                    Log.d("timeout : ", "onChanged: timeout");
+                    displayErrorScreen("Error retrieving data. Check network connection.");
                 }
             }
         });
@@ -89,5 +100,27 @@ public class RecipeDetailsActivity extends BaseActivity {
 
     private void showParent(){
         binding.scrollviewParent.setVisibility(View.VISIBLE);
+    }
+
+    private void displayErrorScreen(String errorMessage){
+        binding.recipeTitle.setText("Error retrieving recipe...");
+        binding.recipeSocialScore.setText("");
+        TextView textView = new TextView(this);
+        if(!errorMessage.equals("")){
+            textView.setText(errorMessage);
+        }else {
+            textView.setText("Error");
+        }
+        textView.setTextSize(15);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
+        binding.ingredientsContainer.addView(textView);
+        RequestOptions requestOptions = new RequestOptions()
+                .placeholder(R.drawable.ic_launcher_background);
+
+        Glide.with(this).setDefaultRequestOptions(requestOptions).load(R.drawable.ic_launcher_background).into(binding.recipeImage);
+        showParent();
+        showProgressBar(false);
     }
 }
