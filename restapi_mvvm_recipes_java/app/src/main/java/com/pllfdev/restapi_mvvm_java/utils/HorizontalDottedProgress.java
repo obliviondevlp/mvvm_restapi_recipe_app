@@ -64,9 +64,9 @@ public class HorizontalDottedProgress extends View {
         //here i have setted progress bar with 10 dots , so repeat and wnen i = mDotPosition  then increase the radius of dot i.e mBounceDotRadius
         for(int i = 0; i < mDotAmount; i++ ){
             if(i == mDotPosition){
-                canvas.drawCircle(10+(i*20), mBounceDotRadius, mBounceDotRadius, paint);
+                canvas.drawCircle(10+(i*16), mBounceDotRadius, mBounceDotRadius, paint);
             }else {
-                canvas.drawCircle(10+(i*20), mBounceDotRadius, mDotRadius, paint);
+                canvas.drawCircle(10+(i*16), mBounceDotRadius, mDotRadius, paint);
             }
         }
 
@@ -80,7 +80,7 @@ public class HorizontalDottedProgress extends View {
         int height;
 
         //calculate the view width
-        int calculatedWidth = (20*9);
+        int calculatedWidth = (18*9);
 
         width = calculatedWidth;
         height = (mBounceDotRadius*2);

@@ -1,23 +1,18 @@
 package com.pllfdev.restapi_mvvm_java.adapters;
 
-import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.pllfdev.restapi_mvvm_java.R;
 import com.pllfdev.restapi_mvvm_java.models.Recipe;
 import com.pllfdev.restapi_mvvm_java.utils.Constants;
-import com.pllfdev.restapi_mvvm_java.utils.Testing;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +61,9 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             ((RecipeViewHolder)holder).title.setText(mRecipes.get(position).getTitle());
             ((RecipeViewHolder)holder).publisher.setText(mRecipes.get(position).getPublisher());
-            ((RecipeViewHolder)holder).socialScore.setText(String.valueOf(Math.round(mRecipes.get(position).getSocial_rank())));
+
+            DecimalFormat decimalFormat = new DecimalFormat("#.#");
+            ((RecipeViewHolder)holder).socialScore.setText(String.valueOf(decimalFormat.format(mRecipes.get(position).getSocial_rank())));
 
         }else if(itemViewType == CATEGORY_TYPE){
             RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_launcher_background);
@@ -86,7 +83,11 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         else if(mRecipes.get(position).getTitle().equals("LOADING...")){
             return  LOADING_TYPE;
-        }else{
+        }
+        else if(position == mRecipes.size() - 1 && position != 0 && !mRecipes.get(position).getTitle().equals("EXHAUSTED...")){
+            return  LOADING_TYPE;
+        }
+        else{
             return RECIPE_TYPE;
         }
     }
