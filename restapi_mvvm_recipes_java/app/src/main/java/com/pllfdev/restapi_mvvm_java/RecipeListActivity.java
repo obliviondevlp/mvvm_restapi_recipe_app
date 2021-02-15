@@ -1,7 +1,10 @@
 package com.pllfdev.restapi_mvvm_java;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,6 +38,7 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
             //display search categories
             displaySearchCategories();
         }
+        setSupportActionBar(binding.toobarSearch);
         //testRetrofitRequest();
 
 
@@ -116,5 +120,19 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
             displaySearchCategories();
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.action_categories){
+            displaySearchCategories();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.recipe_search_menu,menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }
