@@ -31,7 +31,7 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         initRecyclerView();
         subscribeObservers();
         initSearchView();
-        if(!mResipeListViewModel.ismIsViewingRecipes()){
+        if(!mResipeListViewModel.isViewingRecipes()){
             //display search categories
             displaySearchCategories();
         }
@@ -59,8 +59,11 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
             @Override
             public void onChanged(List<Recipe> recipes) {
                 if(recipes != null){
-                    Testing.printRecipes(recipes,"recipes test");
-                    mAdapter.setRecipes(recipes);
+                    if(mResipeListViewModel.isViewingRecipes()){
+                        Testing.printRecipes(recipes,"recipes test");
+                        mResipeListViewModel.setmIsPerformingQuery(false);
+                        mAdapter.setRecipes(recipes);
+                    }
                 }
             }
         });
@@ -74,8 +77,10 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
                 mAdapter.displayLoading();
                 mResipeListViewModel.searchRecipesApi(query,1);
+                binding.searchView.clearFocus();
                 return false;
             }
 
@@ -95,10 +100,21 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
     public void onCategoryClick(String category) {
         mAdapter.displayLoading();
         mResipeListViewModel.searchRecipesApi(category,1);
+        binding.searchView.clearFocus();
     }
 
     private void displaySearchCategories(){
         mResipeListViewModel.setmIsViewingRecipes(false);
         mAdapter.displaySearchCategories();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mResipeListViewModel.onBackPressed()){
+            super.onBackPressed();
+        }else{
+            displaySearchCategories();
+        }
+
     }
 }
