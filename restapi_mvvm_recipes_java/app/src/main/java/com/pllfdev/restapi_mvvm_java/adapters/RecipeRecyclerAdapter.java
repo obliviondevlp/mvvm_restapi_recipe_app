@@ -1,6 +1,7 @@
 package com.pllfdev.restapi_mvvm_java.adapters;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final int RECIPE_TYPE = 1;
     private static final int LOADING_TYPE = 2;
     private static final int CATEGORY_TYPE = 3;
+    private static final int EXHAUSTED_TYPE = 4;
 
     public RecipeRecyclerAdapter(OnRecipeListener mOnRecipeListener) {
         this.mOnRecipeListener = mOnRecipeListener;
@@ -34,6 +36,10 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = null;
         switch (viewType){
+            case EXHAUSTED_TYPE:{
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_search_exausted,parent,false);
+                return new SearchExhaustedViewHolder(view);
+            }
             case LOADING_TYPE:{
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_loading_list_item,parent,false);
                 return new LoadingViewHolder(view);
@@ -84,11 +90,35 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         else if(mRecipes.get(position).getTitle().equals("LOADING...")){
             return  LOADING_TYPE;
         }
+        else if(mRecipes.get(position).getTitle().equals("EXHAUSTED...")){
+            return  EXHAUSTED_TYPE;
+        }
         else if(position == mRecipes.size() - 1 && position != 0 && !mRecipes.get(position).getTitle().equals("EXHAUSTED...")){
             return  LOADING_TYPE;
         }
         else{
             return RECIPE_TYPE;
+        }
+    }
+
+    public void setQueryExhausted(){
+        hideLoading();
+        Recipe exhaustedRecipe = new Recipe();
+        exhaustedRecipe.setTitle("EXHAUSTED...");
+        Log.d("teste", "setQueryExhausted: " + mRecipes.size());
+        mRecipes.add(exhaustedRecipe);
+        notifyDataSetChanged();
+
+    }
+
+    private void hideLoading(){
+        if(isLoading()){
+            for (Recipe recipe : mRecipes){
+                if(recipe.getTitle().equals("LOADING...")){
+                    mRecipes.remove(recipe);
+                }
+            }
+            notifyDataSetChanged();
         }
     }
 
@@ -118,7 +148,7 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private boolean isLoading(){
         if(mRecipes != null){
-            if(mRecipes.size()>0){
+            if(mRecipes.size() > 0){
                 if(mRecipes.get(mRecipes.size() - 1).getTitle().equals("LOADING...")){
                     return true;
                 }
